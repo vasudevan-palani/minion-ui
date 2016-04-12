@@ -21,9 +21,14 @@ angular
       events:true,
     });
 
-    $urlRouterProvider.otherwise('/dashboard/home');
+    $urlRouterProvider.otherwise('/login');
 
     $stateProvider
+      .state('login',{
+        templateUrl:'views/pages/login.html',
+        url:'/login',
+        controller:'LoginController'
+    })
       .state('dashboard', {
         url:'/dashboard',
         templateUrl: 'views/dashboard/main.html',
@@ -93,66 +98,9 @@ angular
           }
         }
       })
-      .state('dashboard.form',{
-        templateUrl:'views/form.html',
-        url:'/login'
-    })
-      .state('dashboard.blank',{
-        templateUrl:'views/pages/blank.html',
-        url:'/blank'
-    })
-      .state('login',{
-        templateUrl:'views/pages/login.html',
-        url:'/login'
-    })
-      .state('dashboard.chart',{
-        templateUrl:'views/chart.html',
-        url:'/chart',
-        controller:'ChartCtrl',
-        resolve: {
-          loadMyFile:function($ocLazyLoad) {
-            return $ocLazyLoad.load({
-              name:'chart.js',
-              files:[
-                'bower_components/angular-chart.js/dist/angular-chart.min.js',
-                'bower_components/angular-chart.js/dist/angular-chart.css'
-              ]
-            }),
-            $ocLazyLoad.load({
-                name:'sbAdminApp',
-                files:['scripts/controllers/chartContoller.js']
-            })
-          }
-        }
-    })
-      .state('dashboard.table',{
-        templateUrl:'views/table.html',
-        url:'/table'
-    })
-      .state('dashboard.panels-wells',{
-          templateUrl:'views/ui-elements/panels-wells.html',
-          url:'/panels-wells'
-      })
-      .state('dashboard.buttons',{
-        templateUrl:'views/ui-elements/buttons.html',
-        url:'/buttons'
-    })
-      .state('dashboard.notifications',{
-        templateUrl:'views/ui-elements/notifications.html',
-        url:'/notifications'
-    })
-      .state('dashboard.typography',{
-       templateUrl:'views/ui-elements/typography.html',
-       url:'/typography'
-   })
-      .state('dashboard.icons',{
-       templateUrl:'views/ui-elements/icons.html',
-       url:'/icons'
-   })
-      .state('dashboard.grid',{
-       templateUrl:'views/ui-elements/grid.html',
-       url:'/grid'
-   })
+      .state('dashboard.effort',{
+        templateUrl:'views/effort.html',
+        url:'/effort',
+        controller: 'EffortController'
+    })      
   }]);
-
-    
