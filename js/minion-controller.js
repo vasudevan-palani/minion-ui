@@ -2,7 +2,7 @@ minionModule.controller('LoginController', function($scope, $rootScope, $utils,$
 	$scope.data = {};
 
 	$scope.login = function() {
-		$utils.ajax('http://localhost:8080/users/login', $scope.data, function(data) {
+		$utils.ajax('http://knowinminutes.com:8080/users/login', $scope.data, function(data) {
 			$rootScope.creds = data.data;
 			$rootScope.empId = $scope.data.empId;
 			$rootScope.password = $scope.data.password;
@@ -23,7 +23,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 	}
 
 	$scope.getAllocations = function() {
-		$utils.ajax('http://localhost:8080/allocations/index', {
+		$utils.ajax('http://knowinminutes.com:8080/allocations/index', {
 			"empId" : $rootScope.empId,
 			"password" : $rootScope.password
 		}, function(data) {
@@ -76,7 +76,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 				"endDate":$scope.endDate
 		};
 
-		$utils.ajax('http://localhost:8080/efforts/getEfforts', reqdata, function(data) {
+		$utils.ajax('http://knowinminutes.com:8080/efforts/getEfforts', reqdata, function(data) {
 			$scope.effortData= data.object;
 
 			if ($scope.startDate != null && $scope.endDate != null
@@ -115,7 +115,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 			"efforts" : $scope.dateRange
 		};
 
-		$utils.ajax('http://localhost:8080/efforts/add', reqdata, function(data) {
+		$utils.ajax('http://knowinminutes.com:8080/efforts/add', reqdata, function(data) {
 			$scope.results = data.data;
 		});
 	}
