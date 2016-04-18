@@ -2,13 +2,92 @@ minionModule.controller('LoginController', function($scope, $rootScope, $utils,$
 	$scope.data = {};
 
 	$scope.login = function() {
-		$utils.ajax('http://knowinminutes.com:8080/users/login', $scope.data, function(data) {
+
+		// $utils.ajax('https://sit1api.tracfone.com/oauth/cc', 'grant_type=client_credentials&scope=linkAccount&client_id=SMAppMyAcct_CCP&client_secret=abc123**&&brandName=STRAIGHT_TALK&sourceSystem=APP', function(data) {
+		// 	$rootScope.creds = data.data;
+		// 	$rootScope.empId = $scope.data.empId;
+		// 	$rootScope.password = $scope.data.password;
+		// 	$state.go('dashboard.effort');
+		// });
+
+		$utils.ajax(URL+'/users/login', $scope.data, function(data) {
 			$rootScope.creds = data.data;
 			$rootScope.empId = $scope.data.empId;
 			$rootScope.password = $scope.data.password;
 			$state.go('dashboard.effort');
 		});
 	}
+});
+
+minionModule.controller('PurchaseOrderController', function($scope, $rootScope, $utils,$state) {
+	$scope.data = {};
+	$scope.data.poRoles=[];
+
+	$scope.init=function(){
+		if(angular.isUndefined($rootScope.selects)){
+			$rootScope.selects={};
+		}
+		$utils.ajax(URL+'/selects/get', {'names':["project"]}, function(data) {
+			$rootScope.selects.project = data.list.project;
+		});
+		$scope.showSearchForm();
+	}
+
+	$scope.showAddForm=function(){
+		console.log("here");
+		$scope._item = "add";
+	}
+
+	$scope.isAddForm = function(){
+		return $scope._item == "add";
+	}
+
+	$scope.showSearchForm=function(){
+		console.log("here");
+		$scope._item = "search";
+	}
+
+	$scope.isSearchForm = function(){
+		return $scope._item == "search";
+	}
+
+	$scope.addPurchaseOrder = function(){
+		$scope.data.empId = $rootScope.empId;
+		$scope.data.password = $rootScope.password;
+
+		$utils.ajax(URL+'/purchaseorders/add', $scope.data, function(data) {
+
+		});
+	}
+
+	$scope.addPoRole = function(){
+		$scope.data.poRoles.push({});
+	}
+
+	$scope.deletePoRole = function(index){
+		$scope.data.poRoles.splice(index,1);
+	}
+
+	$scope.updateTotal = function(index){
+		$scope.data.poRoles[index].total = $scope.data.poRoles[index].quantity * $scope.data.poRoles[index].rate;
+	}
+
+
+
+});
+
+minionModule.controller('SearchPurchaseOrderController', function($scope, $rootScope, $utils,$state) {
+
+	$scope.results={};
+	console.log("here");
+	$scope.searchPurchaseOrder = function(){
+		$scope.data.empId = $rootScope.empId;
+		$scope.data.password = $rootScope.password;
+
+		$utils.ajax(URL+'/purchaseorders/search', $scope.data, function(data) {
+			$scope.results.pos = data.pos;
+		});
+	}	
 });
 
 
@@ -23,7 +102,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 	}
 
 	$scope.getAllocations = function() {
-		$utils.ajax('http://knowinminutes.com:8080/allocations/index', {
+		$utils.ajax(URL+'/allocations/index', {
 			"empId" : $rootScope.empId,
 			"password" : $rootScope.password
 		}, function(data) {

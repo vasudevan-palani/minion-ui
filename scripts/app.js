@@ -102,5 +102,10 @@ angular
         templateUrl:'views/effort.html',
         url:'/effort',
         controller: 'EffortController'
-    })      
+    })
+      .state('dashboard.purchaseorder',{
+        templateUrl:'views/purchaseorder.html',
+        url:'/purchaseorder',
+        controller: 'PurchaseOrderController'
+    })
   }]);

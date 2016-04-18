@@ -1,0 +1,192 @@
+<div class="row" ng-init="init()">
+    <div class="col-lg-12">
+        <h1 class="page-header">Purchase Order</h1>
+    </div>  
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-2"/>
+                    <div class="col-lg-8" >
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-xl btn-circle" ng-class="{'btn-primary':!isAddForm(),'btn-danger':isAddForm()}" ng-click="showAddForm()"><i class="fa fa-plus"></i></button>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-circle btn-xl btn-primary"  ><i class="fa fa-edit"></i></button>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-circle btn-xl " ng-class="{'btn-primary':!isSearchForm(),'btn-danger':isSearchForm()}" ng-click="showSearchForm()"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"/>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form>
+                    <div class="row" ng-show="isAddForm()">
+                        <div class="col-lg-2"/>
+                        <div class="col-lg-8" >
+                            <div class="row">
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>PO Number</label>
+                                        <input class="form-control" ng-model="data.poNumber"></input>
+                                        <p class="help-block">PO Number</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>PO Version</label>
+                                        <input class="form-control" ng-model="data.version"></input>
+                                        <p class="help-block">Version of the PO</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>Project</label>
+                                        <select class="form-control" ng-model="data.projectId">
+                                            <option value="{{projectItem.id}}" ng-repeat="projectItem in $root.selects.project">{{projectItem.name}}</option>
+                                        </select>
+                                        <p class="help-block">Project name as in ESA</p>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>Requested date</label>
+                                        <div class="input-group" minion-date-picker ng-model="data.requestedDate" format="dd-MMMM-yyyy"></div>
+                                        <p class="help-block">Date of the request</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>Requester</label>
+                                        <input class="form-control" ng-model="data.requester"></input>
+                                        <p class="help-block">Requester from PMO</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" >
+                                    <div class="form-group">
+                                        <label>Buyer</label>
+                                        <input class="form-control" ng-model="data.buyer"></input>
+                                        <p class="help-block">Person who requested PMO</p>                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" >
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-block btn-outline btn-primary" ng-click="addPoRole()"><i class="fa fa-plus"></i>  Add Line Item</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-repeat="item in data.poRoles">
+                                <div class="col-lg-5" >
+                                    <div class="form-group">
+                                        <label>Role</label>
+                                        <input class="form-control" ng-model="item.role"></input>
+                                        <p class="help-block">Role of the person</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2" >
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input class="form-control" ng-model="item.rate" ng-blur="updateTotal($index)"></input>
+                                        <p class="help-block">Unit price of this role</p>
+                                    </div>                                    
+                                </div>
+                                <div class="col-lg-2" >
+                                    <div class="form-group">
+                                        <label>Hours</label>
+                                        <input class="form-control" ng-model="item.quantity" ng-blur="updateTotal($index)"></input>
+                                        <p class="help-block">Hours bought for this role</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2" >
+                                    <div class="form-group">
+                                        <label>Total</label>
+                                        <input class="form-control" ng-model="item.total" readonly></input>
+                                        <p class="help-block">Total cost of this role</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-1" >
+                                    <div class="form-group">
+                                        <button class="btn btn-circle btn-lg btn-danger" ng-click="deletePoRole($index)"><i class="fa fa-trash"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" >
+                                    <div class="form-group">
+                                        <button class="btn btn-lg btn-block btn-success" ng-click="addPurchaseOrder()"><i class="fa fa-check"></i>  Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"/>
+                    </div>
+                    <div class="row" ng-show="isSearchForm()">
+                        <div class="col-lg-2"/>
+                        <div class="col-lg-8" ng-controller="SearchPurchaseOrderController">
+                            <div class="row">
+                                <div class="col-lg-4 vcenter" >
+                                    <div class="form-group">
+                                        <label>PO Number</label>
+                                        <input class="form-control" ng-model="data.poNumber"></input>
+                                        <p class="help-block">PO Number</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 vcenter" >
+                                    <div class="form-group">
+                                        <label>Project</label>
+                                        <select class="form-control" ng-model="data.projectId">
+                                            <option value="{{projectItem.id}}" ng-repeat="projectItem in $root.selects.project">{{projectItem.name}}</option>
+                                        </select>
+                                        <p class="help-block">Project name as in ESA</p>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 vcenter" >
+                                    <div class="form-group">
+                                        <button class="btn btn-xl btn-circle btn-info" ng-click="searchPurchaseOrder()"><i class="fa fa-check"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row">
+                                <div class="col-lg-12" >
+                                    <h3> Results </h3><ht/>
+                                </div>
+                            </div>
+                            <div class="row" >
+                                <table class="table table-striped table-bordered table-hover">
+                                    <tr>
+                                        <th>PO #</th>
+                                        <th>PO Version</th>
+                                        <th>Buyer</th>
+                                        <th>Requested On</th>
+                                        <th>Project</th>
+                                    </tr>
+                                    <tr ng-repeat="po in results.pos">
+                                        <td>{{po.poNumber}}</td>
+                                        <td>{{po.version}}</td>
+                                        <td>{{po.buyer}}</td>
+                                        <td>{{po.requestedDate}}</td>
+                                        <td>{{po.projectName}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-lg-2"/>
+                    </div>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>

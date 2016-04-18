@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Purchase Order</h1>
+    </div>  
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-3 text-center">
+                        <button class="btn btn-xl btn-primary btn-circle" ng-click="addPurchaseOrder()"><i class="fa fa-plus"></i></button>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-edit"></i></button>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-search"></i></button>
+                    </div>
+                    <div class="col-lg-3 text-center">
+                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div ng-include src="purchaseorderadd.html"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>

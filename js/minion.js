@@ -22,6 +22,8 @@
 
 var minionModule = angular.module('sbAdminApp');
 
+var URL= 'http://localhost:8080';
+
 minionModule
 		.config([
 				'$httpProvider',
