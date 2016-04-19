@@ -23,6 +23,7 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 	$scope.data = {};
 	$scope.data.poRoles=[];
 
+
 	$scope.init=function(){
 		if(angular.isUndefined($rootScope.selects)){
 			$rootScope.selects={};
@@ -43,7 +44,6 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 	}
 
 	$scope.showAddForm=function(){
-		console.log("here");
 		$scope._item = "add";
 	}
 
@@ -52,7 +52,6 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 	}
 
 	$scope.showSearchForm=function(){
-		console.log("here");
 		$scope._item = "search";
 	}
 
@@ -99,6 +98,13 @@ minionModule.controller('SearchPurchaseOrderController', function($scope, $rootS
 
 	$scope.results={};
 
+	$scope.isFormValid=function(){
+		if($utils.isNullOrEmpty($scope.data.project) && $utils.isNullOrEmpty($scope.data.poNumber)){
+			return false;
+		}
+		return true;
+	}
+
 	$scope.searchPurchaseOrder = function(){
 		$scope.data.empId = $rootScope.empId;
 		$scope.data.password = $rootScope.password;
@@ -112,7 +118,6 @@ minionModule.controller('SearchPurchaseOrderController', function($scope, $rootS
 	}
 
 	$scope.selectPO=function(po){
-		console.log("here");
 		$rootScope.$broadcast('editPO',po);
 	}
 });
@@ -137,7 +142,8 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 		$scope.data = data;
 
 		$utils.ajax(URL+'/purchaseorders/get', {'empId':$rootScope.empId,'password':$rootScope.password,'poId':data.id}, function(data) {
-			data.po.requestedDate=new Date(data.po.requestedDate);
+			data.po.requestedDate=Date.parse(data.po.requestedDate);
+			console.log(data.po.requestedDate);
 			$scope.data = data.po;
 			$scope.projectId = data.po.projectId;
 			var projects = $rootScope.selects.project;
@@ -145,22 +151,26 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 
 				if(projects[projectItem].id == $scope.projectId){
 					$scope.data.project = projects[projectItem];
-					console.log($scope.data.project);
 				}
 			}
 		});
 	});
+
+	$scope.updateTotal = function(index){
+		$scope.data.poRoles[index].total = $scope.data.poRoles[index].quantity * $scope.data.poRoles[index].rate;
+	}
 
 	$scope.selectPO=function(po){
 		$rootScope.$broadcast('editPO',po);
 	}
 
 	$scope.deletePoRole = function(poRole,index){
-		if(angular.isUndefined(poRole.added)){
-			poRole.deleted = 1;
+		if(!angular.isUndefined(poRole.added) && poRole.added==1){
+			$scope.data.poRoles.splice(index,1);
+			
 		}
 		else{
-			$scope.data.poRoles.splice(index,1);
+			poRole.deleted = 1;
 		}
 	}
 	$scope.undoDeletePoRole = function(poRole){
@@ -168,6 +178,12 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 	}
 	$scope.addPoRole = function(){
 		$scope.data.poRoles.push({added:1});
+	}
+
+	$scope.updatePO = function(){
+		$utils.ajax(URL+'/purchaseorders/update', {'po':$scope.data}, function(data) {
+
+		});
 	}
 
 });
@@ -262,7 +278,6 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 					var newDate = start.setDate(start.getDate() + 1);
 					start = new Date(newDate);
 				}
-				console.log($scope.dateRange);
 				$scope.$broadcast('dateRangeUpdated');
 
 			}
@@ -306,8 +321,6 @@ minionModule.controller('AddEffortController', function($scope, $rootScope, $uti
 
 	$scope.refresh = function(){
 		$scope.currentDateRange.splice(0, $scope.currentDateRange.length);
-		console.log($scope.currentStartIndex);
-		console.log($scope.currentEndIndex);
 		for (var i = $scope.currentStartIndex; i <= $scope.currentEndIndex; i++) {
 
 			$scope.currentDateRange.push($scope.dateRange[i]);

@@ -1,38 +1,116 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h1 class="page-header">Purchase Order</h1>
-    </div>  
-    <!-- /.col-lg-12 -->
-</div>
-<!-- /.row -->
-<div class="row">
-    <div class="col-lg-12">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-lg-3 text-center">
-                        <button class="btn btn-xl btn-primary btn-circle" ng-click="addPurchaseOrder()"><i class="fa fa-plus"></i></button>
-                    </div>
-                    <div class="col-lg-3 text-center">
-                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-edit"></i></button>
-                    </div>
-                    <div class="col-lg-3 text-center">
-                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-search"></i></button>
-                    </div>
-                    <div class="col-lg-3 text-center">
-                        <button class="btn btn-circle btn-xl btn-primary" ><i class="fa fa-trash"></i></button>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div ng-include src="purchaseorderadd.html"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- /.panel-body -->
-        </div>
-        <!-- /.panel -->
-    </div>
-</div>
+                        <div class="col-lg-2"/>
+                        <div class="col-lg-8" >
+                            <form name="addpurchaseorderform" novalidate>
+                                <div class="row">
+                                    <div class="col-lg-4" >
+                                        <div class="form-group" ng-class="{'has-error' : addpurchaseorderform.poNumber.$invalid && !addpurchaseorderform.poNumber.$pristine }">
+                                            <label>* PO Number</label>
+                                            <input type="text" name="poNumber" class="form-control" ng-model="data.poNumber" required></input>
+                                            <p class="help-block" ng-hide="addpurchaseorderform.poNumber.$invalid && !addpurchaseorderform.poNumber.$pristine">PO Number</p>
+                                            <p ng-show="addpurchaseorderform.poNumber.$invalid && !addpurchaseorderform.poNumber.$pristine" class="help-block">
+                                                PO # is required.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4" >
+                                        <div class="form-group" ng-class="{'has-error' : addpurchaseorderform.poVersion.$invalid && !addpurchaseorderform.poVersion.$pristine }">
+                                            <label>* PO Version</label>
+                                            <input type="number" name="poVersion" class="form-control" ng-model="data.version" required></input>
+                                            <p class="help-block" ng-hide="addpurchaseorderform.poVersion.$invalid && !addpurchaseorderform.poVersion.$pristine">Version of the PO</p>
+                                            <p ng-show="addpurchaseorderform.poVersion.$invalid && !addpurchaseorderform.poVersion.$pristine" class="help-block">
+                                                PO Version should be number.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4" >
+                                        <div class="form-group">
+                                            <label>Project</label>
+                                              <ui-select ng-model="data.project" theme="bootstrap">
+                                                <ui-select-match placeholder="Pick a project ...">{{$select.selected.name}}</ui-select-match>
+                                                <ui-select-choices repeat="projectItem in $root.selects.project | filter: $select.search">
+                                                  <div ng-bind-html="projectItem.name | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                              </ui-select>
+                                            <p class="help-block">Project name as in ESA</p>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4" >
+                                        <div class="form-group">
+                                            <label>Requested date</label>
+                                            <div class="input-group" minion-date-picker ng-model="data.requestedDate" format="dd-MMMM-yyyy"></div>
+                                            <p class="help-block">Date of the request</p>                                        
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4" >
+                                        <div class="form-group">
+                                            <label>Requester</label>
+                                            <input class="form-control" ng-model="data.requester"></input>
+                                            <p class="help-block">Requester from PMO</p>                                        
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4" >
+                                        <div class="form-group">
+                                            <label>Buyer</label>
+                                            <input class="form-control" ng-model="data.buyer"></input>
+                                            <p class="help-block">Person who requested PMO</p>                                        
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" >
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-block btn-outline btn-primary" ng-click="addPoRole()"><i class="fa fa-plus"></i>  Add Line Item</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in data.poRoles">
+                                    <div class="col-lg-5" >
+                                        <div class="form-group" ng-class="{'has-error' : addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine }">
+                                            <label>* Role</label>
+                                            <input class="form-control" ng-model="item.role" name="role{{$index}}" required></input>
+                                            <p class="help-block" ng-hide="addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine">Role of the person</p>
+                                            <p ng-show="addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine" class="help-block">
+                                                Role is required.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2" >
+                                        <div class="form-group">
+                                            <label>* Price</label>
+                                            <input type="number" class="form-control" ng-model="item.rate" ng-blur="updateTotal($index)"></input>
+                                            <p class="help-block">Unit price of this role</p>
+                                        </div>                                    
+                                    </div>
+                                    <div class="col-lg-2" >
+                                        <div class="form-group">
+                                            <label>* Hours</label>
+                                            <input type="number" class="form-control" ng-model="item.quantity" ng-blur="updateTotal($index)"></input>
+                                            <p class="help-block">Hours bought for this role</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-2" >
+                                        <div class="form-group">
+                                            <label>Total</label>
+                                            <input class="form-control" ng-model="item.total" readonly type="number"></input>
+                                            <p class="help-block">Total cost of this role</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1" >
+                                        <div class="form-group">
+                                            <button class="btn btn-circle btn-lg btn-danger" ng-click="deletePoRole($index)"><i class="fa fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" >
+                                        <div class="form-group">
+                                            <button class="btn btn-lg btn-block btn-success" ng-click="addPurchaseOrder()" ng-disabled="addpurchaseorderform.$invalid"><i class="fa fa-check"></i>  Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-2"/>
+                    

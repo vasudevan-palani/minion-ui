@@ -42,6 +42,14 @@ minionModule
 		.service(
 				'$utils',
 				function($rootScope, $sce, $http,$state) {
+
+					this.isNullOrEmpty=function(item){
+						if(angular.isUndefined(item) || item == "")
+						{
+							return true;
+						}
+						return false;
+					}
 					this.alert = function(str) {
 					};
 					this.ajax = function(url, data, successFunction,
@@ -55,6 +63,10 @@ minionModule
 							ajax_msg = "Please wait";
 
 						}
+						if(!angular.isUndefined($rootScope.empId) && !angular.isUndefined($rootScope.password)){
+							data.empId = $rootScope.empId;
+							data.password=$rootScope.password;
+						}
 						$http.post(url, data)
 								.success(
 										function(data, status, headers, config) {
@@ -66,28 +78,28 @@ minionModule
 												$rootScope.infoMsg = data.infoMsg;
 												$rootScope.alertMsg = data.alertMsg;
 
-												if($rootScope.warnMsg != null && $rootScope.infoMsg != null && $rootScope.alertMsg != null){
-													if($rootScope.warnMsg != ""){
-														$rootScope.notificationMsg = $rootScope.warnMsg;
-														$rootScope.notificationTitle = "Warning";
-														$rootScope.notificationIcon = "fa-exclamation-triangle";
-														$rootScope.notificationLevel = "warning";
-													}
-													if($rootScope.infoMsg != ""){
-														$rootScope.notificationMsg = $rootScope.infoMsg;
-														$rootScope.notificationTitle = "Info";
-														$rootScope.notificationIcon = "fa-info-circle";
-														$rootScope.notificationLevel = "info";
-													}
-													if($rootScope.alertMsg != ""){
-														$rootScope.notificationMsg = $rootScope.alertMsg;
-														$rootScope.notificationTitle = "Alert";
-														$rootScope.notificationIcon = "fa-exclamation-circle";
-														$rootScope.notificationLevel = "primary";
-													}
+												if($rootScope.warnMsg != null && $rootScope.warnMsg != "") {
+													$rootScope.notificationMsg = $rootScope.warnMsg;
+													$rootScope.notificationTitle = "Warning";
+													$rootScope.notificationIcon = "fa-exclamation-triangle";
+													$rootScope.notificationLevel = "warning";
 													$('#myModal').modal('show');
-
 												}
+												if($rootScope.infoMsg != null && $rootScope.infoMsg != "") {
+													$rootScope.notificationMsg = $rootScope.infoMsg;
+													$rootScope.notificationTitle = "Info";
+													$rootScope.notificationIcon = "fa-info-circle";
+													$rootScope.notificationLevel = "info";
+													$('#myModal').modal('show');
+												}
+												if($rootScope.alertMsg != null && $rootScope.alertMsg != "") {
+													$rootScope.notificationMsg = $rootScope.alertMsg;
+													$rootScope.notificationTitle = "Alert";
+													$rootScope.notificationIcon = "fa-exclamation-circle";
+													$rootScope.notificationLevel = "primary";
+													$('#myModal').modal('show');
+												}
+													
 
 												if ('redirectUrl' in data
 														&& data.redirectUrl != null
@@ -147,7 +159,7 @@ minionModule.directive(
             },
             template:''+
                                     '<input type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" readonly ng-model="dateobj"'+
-                                    ' is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />'+
+                                    ' is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="[\'M!/d!/yyyy\']" />'+
                                     '<span class="input-group-btn"> '+
                                         '<button class="btn btn-default" type="button" ng-click="open1()">'+
                                             '<i class="fa fa-calendar"></i>'+
