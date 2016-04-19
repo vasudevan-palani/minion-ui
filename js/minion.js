@@ -147,7 +147,7 @@ minionModule.directive(
             },
             template:''+
                                     '<input type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" readonly ng-model="dateobj"'+
-                                    ' is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" alt-input-formats="altInputFormats" />'+
+                                    ' is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />'+
                                     '<span class="input-group-btn"> '+
                                         '<button class="btn btn-default" type="button" ng-click="open1()">'+
                                             '<i class="fa fa-calendar"></i>'+

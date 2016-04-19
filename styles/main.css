@@ -163,3 +163,25 @@ div[minion-date-picker] > input[readOnly]  {
      border-top-left-radius: 5px;
      border-top-right-radius: 5px;
 }
+
+.has-watermark {
+  position: relative;
+}
+
+.watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color:#CCEECC;
+  width:92%;
+  height:100%;
+  opacity:0.3;
+}
+
+.watermark-enabled{
+  display:block;
+}
+
+.watermark-disabled{
+  display:none;
+}

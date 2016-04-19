@@ -33,6 +33,15 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 		$scope.showSearchForm();
 	}
 
+	$scope.showEditForm=function(){
+
+		$scope._item = "edit";
+	}
+
+	$scope.isEditForm = function(){
+		return $scope._item == "edit";
+	}
+
 	$scope.showAddForm=function(){
 		console.log("here");
 		$scope._item = "add";
@@ -51,9 +60,17 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 		return $scope._item == "search";
 	}
 
+
+	$scope.$on('editPO',function(event,data){
+		$scope._item = "edit";
+	});
+
 	$scope.addPurchaseOrder = function(){
 		$scope.data.empId = $rootScope.empId;
 		$scope.data.password = $rootScope.password;
+		if(!angular.isUndefined($scope.data.project)){
+			$scope.data.projectId = $scope.data.project.id;
+		}
 
 		$utils.ajax(URL+'/purchaseorders/add', $scope.data, function(data) {
 
@@ -77,18 +94,84 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 });
 
 minionModule.controller('SearchPurchaseOrderController', function($scope, $rootScope, $utils,$state) {
+	$rootScope.empId = "161547";
+	$rootScope.password = "password";	
 
 	$scope.results={};
-	console.log("here");
+
 	$scope.searchPurchaseOrder = function(){
 		$scope.data.empId = $rootScope.empId;
 		$scope.data.password = $rootScope.password;
-
+		if(!angular.isUndefined($scope.data.project)){
+			$scope.data.projectId = $scope.data.project.id;
+		}
+		
 		$utils.ajax(URL+'/purchaseorders/search', $scope.data, function(data) {
 			$scope.results.pos = data.pos;
 		});
-	}	
+	}
+
+	$scope.selectPO=function(po){
+		console.log("here");
+		$rootScope.$broadcast('editPO',po);
+	}
 });
+
+minionModule.controller('EditPurchaseOrderController', function($scope, $rootScope, $utils,$state) {
+
+	$scope.edit={};
+
+	$scope.isDeleted = function(poRole){
+		if(angular.isUndefined(poRole.deleted)){
+			return false;
+		}
+		else if (poRole.deleted == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	$scope.$on('editPO',function(event,data){
+		$scope.data = data;
+
+		$utils.ajax(URL+'/purchaseorders/get', {'empId':$rootScope.empId,'password':$rootScope.password,'poId':data.id}, function(data) {
+			data.po.requestedDate=new Date(data.po.requestedDate);
+			$scope.data = data.po;
+			$scope.projectId = data.po.projectId;
+			var projects = $rootScope.selects.project;
+			for(projectItem in projects){
+
+				if(projects[projectItem].id == $scope.projectId){
+					$scope.data.project = projects[projectItem];
+					console.log($scope.data.project);
+				}
+			}
+		});
+	});
+
+	$scope.selectPO=function(po){
+		$rootScope.$broadcast('editPO',po);
+	}
+
+	$scope.deletePoRole = function(poRole,index){
+		if(angular.isUndefined(poRole.added)){
+			poRole.deleted = 1;
+		}
+		else{
+			$scope.data.poRoles.splice(index,1);
+		}
+	}
+	$scope.undoDeletePoRole = function(poRole){
+		poRole.deleted = undefined;
+	}
+	$scope.addPoRole = function(){
+		$scope.data.poRoles.push({added:1});
+	}
+
+});
+
 
 
 minionModule.controller('EffortController', function($scope, $rootScope, $utils,$state) {
