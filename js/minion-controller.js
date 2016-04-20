@@ -19,6 +19,11 @@ minionModule.controller('LoginController', function($scope, $rootScope, $utils,$
 	}
 });
 
+minionModule.controller('HeaderCtrl', function($scope, $rootScope, $utils,$state) {
+	$scope.isState=function(stateName){
+		return $state.current.name == stateName;
+	}
+});
 minionModule.controller('PurchaseOrderController', function($scope, $rootScope, $utils,$state) {
 	$scope.data = {};
 	$scope.data.poRoles=[];
@@ -210,9 +215,20 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 	};
 
 	$scope.selectAllocation = function(allocation) {
+		if(!angular.isUndefined($scope.selectedAllocation)){
+			if($scope.selectedAllocation == allocation){
+				$scope.selectedAllocation = undefined;
+			}
+		}
 		$scope.selectedAllocation = allocation;
 	}
 
+	$scope.isAllocationSelected = function(){
+
+		console.log(!angular.isUndefined($scope.selectedAllocation));
+		console.log($scope.addeffortform.$invalid);
+		return !angular.isUndefined($scope.selectedAllocation);
+	}
 	// $scope.toDate = function(dateStr) {
 	// 	var parts = dateStr.split("-");
 	// 	return new Date(parts[0], parts[1] - 1, parts[2]);
@@ -254,7 +270,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 				"endDate":$scope.endDate
 		};
 
-		$utils.ajax('http://knowinminutes.com:8080/efforts/getEfforts', reqdata, function(data) {
+		$utils.ajax(URL+'/efforts/getEfforts', reqdata, function(data) {
 			$scope.effortData= data.object;
 
 			if ($scope.startDate != null && $scope.endDate != null
@@ -292,7 +308,7 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 			"efforts" : $scope.dateRange
 		};
 
-		$utils.ajax('http://knowinminutes.com:8080/efforts/add', reqdata, function(data) {
+		$utils.ajax(URL+'/efforts/add', reqdata, function(data) {
 			$scope.results = data.data;
 		});
 	}

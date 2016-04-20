@@ -5,6 +5,7 @@
     <!-- /.col-lg-12 -->
 </div>
 <!-- /.row -->
+<form role="form" name="addeffortform">
 <div class="row">
     <div class="col-lg-6">
         <div class="panel panel-default">
@@ -12,27 +13,26 @@
                 Select Date range
             </div>
             <div class="panel-body">
-                <form role="form">
                     <div class="row">
                         <div class="col-lg-5 vcenter">
-                            <div class="form-group">
+                            <div class="form-group" ng-class="{'has-error' : addeffortform.startDate.$invalid && !addeffortform.startDate.$pristine }">
                                 <label>Start Date</label>
-                                <div class="input-group" minion-date-picker ng-model="startDate" format="dd-MMMM-yyyy"></div>
+                                <div class="input-group" minion-date-picker ng-model="startDate" format="dd-MMMM-yyyy" name="startDate" required></div>
                                 <p class="help-block">Date from when you want to add efforts</p>
                             </div>
                         </div>
                         <div class="col-lg-5 vcenter">
-                            <div class="form-group">
+                            <div class="form-group" ng-class="{'has-error' : addeffortform.endDate.$invalid && !addeffortform.endDate.$pristine }">
                                 <label>End Date</label>
-                                <div class="input-group" minion-date-picker ng-model="endDate" format="dd-MMMM-yyyy"></div>
+                                <div class="input-group" minion-date-picker ng-model="endDate" format="dd-MMMM-yyyy" name="endDate" required></div>
                                 <p class="help-block">Date until when you want to add efforts</p>
                             </div>
                         </div>
-                        <div class="col-lg-1 vcenter">
-                            <button class="btn btn-info btn-circle btn-xl" ng-click="updateDates()"><i class="fa fa-check"></i></button>
+                        <div class="col-lg-1 vcenter" >
+                            <button class="btn btn-info btn-circle btn-xl" ng-click="updateDates()" ng-disabled="addeffortform.$invalid"><i class="fa fa-check"></i></button>
                         </div>
                     </div>
-                </form>
+                
                     <!-- /.col-lg-6 (nested) -->
                 <!-- /.row (nested) -->
             </div>
@@ -65,9 +65,11 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="allocation in allocations">
-                                            <td><input type="checkbox"
-                                                    ng-click="selectAllocation(allocation)"
-                                                    value="{{allocation.id}}"></input></td>
+                                            <td>
+                                                <input name="allocation" ng-required="isAllocationSelected()" id="selectedproject" type="checkbox" ng-click="selectAllocation(allocation)"
+                                                    value="{{allocation.id}}" />
+                                                <label for="selectedproject"></label>
+                                            </td>
                                             <td>{{allocation.projectESAId}}</td>
                                             <td>{{allocation.projectName}}</td>
                                             <td>{{allocation.startDate}}</td>
@@ -88,7 +90,7 @@
         <!-- /.panel -->
     </div>
 </div>
-
+</form>
 
 
 <div class="row" ng-show="dateRange.length>0">
@@ -127,7 +129,7 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <button class="btn btn-success btn-block btn-lg" ng-click="addEfforts()">Submit</button>
+                            <button class="btn btn-success btn-block btn-lg" ng-click="addEfforts()"><i class="fa fa-check"/> Submit</button>
                         </div>
                     </div>
                 </form>

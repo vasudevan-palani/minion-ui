@@ -1,14 +1,30 @@
-<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-    <div class="navbar-header">
-
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="index.html">Minion</a>
+<div class="row" ng-controller="HeaderCtrl">
+    <div class="col-lg-2 relative">
+      <div class="logo-bg">
+        <img src="images/minion.png" height="200px" style="position:absolute;left:50px;top:20px;"/>
+      </div>
     </div>
-
-    <sidebar></sidebar>
-</nav>
+    <div class="col-lg-2 header-vasu">
+      <button class="btn btn-block btn-lg" ng-class="{'btn-danger':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
+        Invoices
+      </button>
+    </div>
+    <div class="col-lg-2 header-vasu">
+      <button class="btn btn-block btn-lg" ui-sref="dashboard.purchaseorder" ng-class="{'btn-success':isState('dashboard.purchaseorder'),'btn-primary':!isState('dashboard.purchaseorder')}">
+        PurchaseOrders
+      </button>
+    </div>
+    <div class="col-lg-2 header-vasu">
+      <button class="btn btn-block btn-lg" ng-class="{'btn-success':isState('dashboard.project'),'btn-primary':!isState('dashboard.project')}">
+        Projects
+      </button>
+    </div>
+    <div class="col-lg-2 header-vasu">
+      <button class="btn btn-block btn-lg" ui-sref="dashboard.effort" ng-class="{'btn-success':isState('dashboard.effort'),'btn-primary':!isState('dashboard.effort')}">
+        Efforts
+      </button>
+    </div>
+    <div class="col-lg-2 header-vasu">
+      <div class="empty"/>
+    </div>
+</div>
