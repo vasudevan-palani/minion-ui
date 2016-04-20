@@ -22,7 +22,7 @@
 
 var minionModule = angular.module('sbAdminApp');
 
-var URL= 'http://localhost:8080';
+var URL= 'http://knowinminutes.com:8080';
 
 minionModule
 		.config([
@@ -186,7 +186,7 @@ minionModule.directive(
 			  };
 
 			  $scope.dateOptions = {
-			    dateDisabled: disabled,
+			    //dateDisabled: disabled,
 			    formatYear: 'yy',
 			    maxDate: new Date(2020, 5, 22),
 			    minDate: new Date(),

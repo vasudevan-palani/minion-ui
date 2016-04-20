@@ -98,8 +98,8 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 });
 
 minionModule.controller('SearchPurchaseOrderController', function($scope, $rootScope, $utils,$state) {
-	$rootScope.empId = "161547";
-	$rootScope.password = "password";	
+	// $rootScope.empId = "161547";
+	// $rootScope.password = "password";	
 
 	$scope.results={};
 
