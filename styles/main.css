@@ -193,10 +193,10 @@ div[minion-date-picker] > input[readOnly]  {
 .logo-bg {
   position: absolute;
   border-bottom-right-radius: 100%;
-  background-color: #337ab7;
   width: 100%;
-  height: 260px;
+  height:140px;
   border-color: #337ab7;
+  background-color: #337ab7;
   border-style: solid;
 }
 
@@ -208,7 +208,7 @@ div[minion-date-picker] > input[readOnly]  {
 
 .header-vasu button {
   border-style: none;
-  height: 70px;
+  height: 45px;
   padding-left: 0px;
   padding-right: 0px;
   width: 100%;

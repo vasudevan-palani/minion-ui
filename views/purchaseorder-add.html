@@ -67,13 +67,23 @@
                                 </div>
                                 <div class="row" ng-repeat="item in data.poRoles">
                                     <div class="col-lg-5" >
-                                        <div class="form-group" ng-class="{'has-error' : addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine }">
+                                        <div class="form-group" ng-class="{'has-error' : addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine }" ng-hide="isUserVisible(item)">
                                             <label>* Role</label>
-                                            <input class="form-control" ng-model="item.role" name="role{{$index}}" required></input>
-                                            <p class="help-block" ng-hide="addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine">Role of the person</p>
+                                            <input class="form-control" ng-model="item.role" name="role{{$index}}" required ng-blur="showUser(item)"></input>
+                                            <p class="help-block" ng-hide="addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine">Role of person {{item.user.name}} </p>
                                             <p ng-show="addpurchaseorderform.role{{$index}}.$invalid && !addpurchaseorderform.role{{$index}}.$pristine" class="help-block">
                                                 Role is required.
                                             </p>
+                                        </div>
+                                        <div class="form-group" ng-show="isUserVisible(item)">
+                                            <label>User</label>
+                                              <ui-select ng-model="item.user" theme="bootstrap">
+                                                <ui-select-match placeholder="Pick a user ...">{{$select.selected.name}}</ui-select-match>
+                                                <ui-select-choices repeat="userItem in $root.selects.user | filter: $select.search">
+                                                  <div ng-bind-html="userItem.name | highlight: $select.search"></div>
+                                                </ui-select-choices>
+                                              </ui-select>
+                                            <p class="help-block">{{item.role}}</p>
                                         </div>
                                     </div>
                                     <div class="col-lg-2" >
@@ -99,7 +109,13 @@
                                     </div>
                                     <div class="col-lg-1" >
                                         <div class="form-group">
-                                            <button class="btn btn-circle btn-lg btn-danger" ng-click="deletePoRole($index)"><i class="fa fa-trash"></i></button>
+                                            <div style="margin-bottom:5px">
+                                                <button class="btn btn-circle btn-danger btn-lg" ng-click="deletePoRole($index)" title="Delete Role"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                            <div>
+                                                <button class="btn btn-circle btn-primary btn-lg"   title="Assign User" ng-hide="isUserVisible(item)" ng-click="item.assignUser=1"><i class="fa fa-user"></i></button>
+                                                <button class="btn btn-circle btn-primary btn-lg" title="Go Back" ng-show="isUserVisible(item)" ng-click="item.assignUser=undefined"><i class="fa fa-arrow-left" ></i></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

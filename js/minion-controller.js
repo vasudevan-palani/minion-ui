@@ -39,8 +39,9 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 		if(angular.isUndefined($rootScope.selects)){
 			$rootScope.selects={};
 		}
-		$utils.ajax(URL+'/selects/get', {'names':["project"]}, function(data) {
+		$utils.ajax(URL+'/selects/get', {'names':["project","user"]}, function(data) {
 			$rootScope.selects.project = data.list.project;
+			$rootScope.selects.user = data.list.user;
 		});
 		$scope.showSearchForm();
 	}
@@ -82,9 +83,31 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 			$scope.data.projectId = $scope.data.project.id;
 		}
 
+		for(roleIndex in $scope.data.poRoles){
+			if(!angular.isUndefined($scope.data.poRoles[roleIndex].user)){
+				$scope.data.poRoles[roleIndex].userId = $scope.data.poRoles[roleIndex].user.id;				
+			}
+
+		}
+
 		$utils.ajax(URL+'/purchaseorders/add', $scope.data, function(data) {
 
 		});
+	}
+
+	$scope.isUserVisible = function(item){
+		return (!angular.isUndefined(item.assignUser) && item.assignUser==1);
+	}
+
+	$scope.showUser = function(item){
+
+		if(!angular.isUndefined(item.role) && item.role != "" ){
+
+			item.assignUser = 1;
+		}
+		else{
+			item.assignUser = undefined;
+		}
 	}
 
 	$scope.addPoRole = function(){
@@ -98,8 +121,6 @@ minionModule.controller('PurchaseOrderController', function($scope, $rootScope, 
 	$scope.updateTotal = function(index){
 		$scope.data.poRoles[index].total = $scope.data.poRoles[index].quantity * $scope.data.poRoles[index].rate;
 	}
-
-
 
 });
 
@@ -163,8 +184,33 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 					$scope.data.project = projects[projectItem];
 				}
 			}
+
+			var users = $rootScope.selects.user;
+			for(poRoleIndex in data.po.poRoles){
+				var poRole = data.po.poRoles[poRoleIndex];
+				for(userItem in users){
+					if(users[userItem].id == poRole.userId){
+						poRole.user = users[userItem];
+					}
+				}				
+			}
 		});
 	});
+
+	$scope.isUserVisible = function(item){
+		return (!angular.isUndefined(item.assignUser) && item.assignUser==1);
+	}
+
+	$scope.showUser = function(item){
+
+		if(!angular.isUndefined(item.role) && item.role != "" ){
+
+			item.assignUser = 1;
+		}
+		else{
+			item.assignUser = undefined;
+		}
+	}
 
 	$scope.updateTotal = function(index){
 		$scope.data.poRoles[index].total = $scope.data.poRoles[index].quantity * $scope.data.poRoles[index].rate;
@@ -191,6 +237,11 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 	}
 
 	$scope.updatePO = function(){
+		for(roleIndex in $scope.data.poRoles){
+			if(!angular.isUndefined($scope.data.poRoles[roleIndex].user)){
+				$scope.data.poRoles[roleIndex].userId = $scope.data.poRoles[roleIndex].user.id;				
+			}
+		}
 		$utils.ajax(URL+'/purchaseorders/update', {'po':$scope.data}, function(data) {
 
 		});
