@@ -1,0 +1,44 @@
+<div class="row" ng-init="init()">
+    <div class="col-lg-12">
+        <h1 class="page-header">Invoice</h1>
+    </div>  
+    <!-- /.col-lg-12 -->
+</div>
+<!-- /.row -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-2"/>
+                    <div class="col-lg-8" >
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-xl btn-circle" ng-class="{'btn-primary':!isAddForm(),'btn-danger':isAddForm()}" ng-click="showAddForm()"><i class="fa fa-plus"></i></button>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-circle btn-xl " ng-class="{'btn-primary':!isEditForm(),'btn-danger':isEditForm()}" ><i class="fa fa-edit"></i></button>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <button class="btn btn-circle btn-xl " ng-class="{'btn-primary':!isSearchForm(),'btn-danger':isSearchForm()}" ng-click="showSearchForm()"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"/>
+                </div>
+            </div>
+            <div class="panel-body">
+                    <div class="row" ng-show="isAddForm()">
+                        <span ng-include="'views/invoice-add.html'"></span>
+                    </div>
+                    <div class="row" ng-show="isSearchForm()">
+                        <span ng-include="'views/invoice-search.html'"></span>
+                    </div>
+                    <div class="row" ng-show="isEditForm()">
+                        <span ng-include="'views/invoice-edit.html'"></span>
+                    </div>
+                </form>
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+</div>

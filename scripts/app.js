@@ -110,4 +110,11 @@ angular
         url:'/purchaseorder',
         controller: 'PurchaseOrderController'
     })
+      .state('dashboard.invoice',{
+        templateUrl:'views/invoice.html',
+        url:'/invoice',
+        controller: 'InvoiceController'
+    })
   }]);
+
+

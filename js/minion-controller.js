@@ -23,6 +23,12 @@ minionModule.controller('HeaderCtrl', function($scope, $rootScope, $utils,$state
 	$scope.isState=function(stateName){
 		return $state.current.name == stateName;
 	}
+
+	$scope.logout=function(){
+		$rootScope.empId=undefined;
+		$rootScope.password=undefined;
+		$state.go('login');
+	}
 });
 minionModule.controller('PurchaseOrderController', function($scope, $rootScope, $utils,$state) {
 	$scope.data = {};
@@ -148,7 +154,6 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 
 		$utils.ajax(URL+'/purchaseorders/get', {'empId':$rootScope.empId,'password':$rootScope.password,'poId':data.id}, function(data) {
 			data.po.requestedDate=Date.parse(data.po.requestedDate);
-			console.log(data.po.requestedDate);
 			$scope.data = data.po;
 			$scope.projectId = data.po.projectId;
 			var projects = $rootScope.selects.project;
@@ -200,10 +205,6 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 	// $rootScope.empId = "161547";
 	// $rootScope.password = "password";	
 
-	$scope.debug = function(){
-		console.log($scope.startDate);
-		console.log($scope.endDate);
-	}
 
 	$scope.getAllocations = function() {
 		$utils.ajax(URL+'/allocations/index', {
@@ -225,8 +226,6 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 
 	$scope.isAllocationSelected = function(){
 
-		console.log(!angular.isUndefined($scope.selectedAllocation));
-		console.log($scope.addeffortform.$invalid);
 		return !angular.isUndefined($scope.selectedAllocation);
 	}
 	// $scope.toDate = function(dateStr) {
@@ -379,4 +378,262 @@ minionModule.controller('AddEffortController', function($scope, $rootScope, $uti
 	$scope.isDecrementDisabled = function(){
 		return $scope.currentStartIndex == 0;
 	}
+});
+
+minionModule.controller('InvoiceController', function($scope, $rootScope, $utils,$state) {
+	$scope.data = {};
+	$scope.data.invoiceUsers=[];
+
+
+	$scope.init=function(){
+		if(angular.isUndefined($rootScope.selects)){
+			$rootScope.selects={};
+		}
+		$utils.ajax(URL+'/selects/get', {'names':["user","project","status"]}, function(data) {
+			$rootScope.selects.user = data.list.user;
+			$rootScope.selects.project = data.list.project;
+			$rootScope.selects.status = data.list.status;
+		});
+		$scope.showSearchForm();
+	}
+
+	$scope.showEditForm=function(){
+
+		$scope._item = "edit";
+	}
+
+	$scope.isEditForm = function(){
+		return $scope._item == "edit";
+	}
+
+	$scope.showAddForm=function(){
+		$scope._item = "add";
+	}
+
+	$scope.isAddForm = function(){
+		return $scope._item == "add";
+	}
+
+	$scope.showSearchForm=function(){
+		$scope._item = "search";
+	}
+
+	$scope.isSearchForm = function(){
+		return $scope._item == "search";
+	}
+
+
+	$scope.$on('editInvoice',function(event,data){
+		$scope._item = "edit";
+	});
+
+	$scope.addInvoice = function(){
+
+		if(!angular.isUndefined($scope.data.project)){
+			$scope.data.projectId = $scope.data.project.id;
+		}
+		if(!angular.isUndefined($scope.data.status)){
+			$scope.data.statusId = $scope.data.status.id;
+		}
+
+		for(userIndex in $scope.data.invoiceUsers){
+			$scope.data.invoiceUsers[userIndex].userId = $scope.data.invoiceUsers[userIndex].user.id;
+		}
+
+		$utils.ajax(URL+'/invoice/add', {'invoice':$scope.data}, function(data) {
+
+		});
+	}
+
+	$scope.addUser = function(){
+		$scope.data.invoiceUsers.push({});
+	}
+
+	$scope.deleteUser = function(index){
+		$scope.data.invoiceUsers.splice(index,1);
+	}
+
+	$scope.updateTotal = function(index){
+		$scope.data.invoiceUsers[index].total = $scope.data.invoiceUsers[index].hours * $scope.data.invoiceUsers[index].billingRate;
+		$scope.data.total = 0; 
+		for(userIndex in $scope.data.invoiceUsers){
+			$scope.data.total = $scope.data.total + $scope.data.invoiceUsers[userIndex].total;
+		}
+	}
+
+
+
+});
+
+
+minionModule.controller('AddInvoiceController', function($scope, $rootScope, $utils,$state) {
+	$scope.data = {};
+	$scope.data.invoiceUsers=[];
+
+
+	$scope.addInvoice = function(){
+
+		if(!angular.isUndefined($scope.data.project)){
+			$scope.data.projectId = $scope.data.project.id;
+		}
+		if(!angular.isUndefined($scope.data.status)){
+			$scope.data.statusId = $scope.data.status.id;
+		}
+
+		for(userIndex in $scope.data.invoiceUsers){
+			$scope.data.invoiceUsers[userIndex].userId = $scope.data.invoiceUsers[userIndex].user.id;
+		}
+
+		$utils.ajax(URL+'/invoice/add', {'invoice':$scope.data}, function(data) {
+
+		});
+	}
+
+	$scope.addUser = function(){
+		$scope.data.invoiceUsers.push({});
+	}
+
+	$scope.deleteUser = function(index){
+		$scope.data.invoiceUsers.splice(index,1);
+	}
+
+	$scope.updateTotal = function(index){
+		$scope.data.invoiceUsers[index].total = $scope.data.invoiceUsers[index].hours * $scope.data.invoiceUsers[index].billingRate;
+		$scope.data.total = 0; 
+		for(userIndex in $scope.data.invoiceUsers){
+			$scope.data.total = $scope.data.total + $scope.data.invoiceUsers[userIndex].total;
+		}
+	}
+
+
+
+});
+
+
+minionModule.controller('SearchInvoiceController', function($scope, $rootScope, $utils,$state) {
+	$rootScope.empId = "161547";
+	$rootScope.password = "password";	
+
+	$scope.results={};
+
+	$scope.isFormValid=function(){
+		if($utils.isNullOrEmpty($scope.data.project) && $utils.isNullOrEmpty($scope.data.poNumber)){
+			return false;
+		}
+		return true;
+	}
+
+	$scope.searchInvoice = function(){
+		if(!angular.isUndefined($scope.data.project)){
+			$scope.data.projectId = $scope.data.project.id;
+		}
+		
+		if(!angular.isUndefined($scope.data.status)){
+			$scope.data.statusId = $scope.data.status.id;
+		}
+
+		$utils.ajax(URL+'/invoice/search', $scope.data, function(data) {
+			$scope.results.invoices = data.invoices;
+		});
+	}
+
+	$scope.selectInvoice=function(invoice){
+		$rootScope.$broadcast('editInvoice',invoice);
+	}
+
+
+});
+
+minionModule.controller('EditInvoiceController', function($scope, $rootScope, $utils,$state) {
+
+	$scope.edit={};
+
+	$scope.isDeleted = function(invoiceUser){
+		if(angular.isUndefined(invoiceUser.deleted)){
+			return false;
+		}
+		else if (invoiceUser.deleted == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	$scope.$on('editInvoice',function(event,data){
+		$scope.data = data;
+
+		$utils.ajax(URL+'/invoice/get', {'empId':$rootScope.empId,'password':$rootScope.password,'invoiceId':data.id}, function(data) {
+			data.invoice.invoiceDate=Date.parse(data.invoice.invoiceDate);
+			data.invoice.startDate=Date.parse(data.invoice.startDate);
+			data.invoice.endDate=Date.parse(data.invoice.endDate);
+
+			$scope.data = data.invoice;
+			$scope.projectId = data.invoice.projectId;
+			var projects = $rootScope.selects.project;
+			for(projectItem in projects){
+
+				if(projects[projectItem].id == $scope.projectId){
+					$scope.data.project = projects[projectItem];
+				}
+			}
+			$scope.data.statusId = data.invoice.statusId;
+			var status = $rootScope.selects.status;
+			for(statusItem in status){
+
+
+				if(status[statusItem].id == $scope.data.statusId){
+					$scope.data.status = status[statusItem];
+				}
+			}
+
+			var invoiceUsers = data.invoice.invoiceUsers;
+			var users = $rootScope.selects.user;
+			for(invoiceUserItemIndex in invoiceUsers){
+
+				for(userItemIndex in users){
+					if(invoiceUsers[invoiceUserItemIndex].userId == users[userItemIndex].id){
+						invoiceUsers[invoiceUserItemIndex].user = users[userItemIndex];
+					}					
+				}
+			}
+
+
+		});
+	});
+
+	$scope.updateTotal = function(index){
+		$scope.data.invoiceUsers[index].total = $scope.data.invoiceUsers[index].hours * $scope.data.invoiceUsers[index].billingRate;
+		$scope.data.total = 0; 
+		for(userIndex in $scope.data.invoiceUsers){
+			$scope.data.total = $scope.data.total + $scope.data.invoiceUsers[userIndex].total;
+		}
+	}
+
+	$scope.selectInvoice=function(invoice){
+		$rootScope.$broadcast('editInvoice',invoice);
+	}
+
+	$scope.deleteInvoiceUser = function(invoiceUser,index){
+		if(!angular.isUndefined(invoiceUser.added) && invoiceUser.added==1){
+			$scope.data.invoiceUsers.splice(index,1);
+			
+		}
+		else{
+			invoiceUser.deleted = 1;
+		}
+	}
+	$scope.undoDeleteInvoiceUser = function(invoiceUser){
+		invoiceUser.deleted = undefined;
+	}
+	$scope.addInvoiceUser = function(){
+		$scope.data.invoiceUsers.push({added:1});
+	}
+
+	$scope.updateInvoice = function(){
+		$utils.ajax(URL+'/invoice/update', {'invoice':$scope.data}, function(data) {
+
+		});
+	}
+
 });

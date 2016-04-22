@@ -5,7 +5,7 @@
       </div>
     </div>
     <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg" ng-class="{'btn-danger':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
+      <button class="btn btn-block btn-lg" ui-sref="dashboard.invoice" ng-class="{'btn-success':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
         Invoices
       </button>
     </div>
@@ -25,6 +25,8 @@
       </button>
     </div>
     <div class="col-lg-2 header-vasu">
-      <div class="empty"/>
+      <button class="btn btn-block btn-lg btn-primary" ng-click="logout()">
+        Logout ( {{$root.empId}} )
+      </button>
     </div>
 </div>
