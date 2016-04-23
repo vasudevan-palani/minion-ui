@@ -254,8 +254,12 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 minionModule.controller('EffortController', function($scope, $rootScope, $utils,$state) {
 
 	// $rootScope.empId = "161547";
-	// $rootScope.password = "password";	
+	// $rootScope.password = "password";
+	$scope.results={};
 
+	$scope._showForm = true;
+
+	$scope.selectedAllocation = [];
 
 	$scope.getAllocations = function() {
 		$utils.ajax(URL+'/allocations/index', {
@@ -266,38 +270,27 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 		});
 	};
 
-	$scope.selectAllocation = function(allocation) {
-		if(!angular.isUndefined($scope.selectedAllocation)){
-			if($scope.selectedAllocation == allocation){
-				$scope.selectedAllocation = undefined;
-			}
+	$scope.selectAllocation = function(allocation,index) {
+		if(allocation.checkvalue == 1){
+			$scope.selectedAllocation.push(allocation);			
 		}
-		$scope.selectedAllocation = allocation;
+		else{
+			$scope.selectedAllocation.splice(index,1);
+		}
+
 	}
 
 	$scope.isAllocationSelected = function(){
-
-		return !angular.isUndefined($scope.selectedAllocation);
+		
+		return $scope.selectedAllocation.length>0;
 	}
-	// $scope.toDate = function(dateStr) {
-	// 	var parts = dateStr.split("-");
-	// 	return new Date(parts[0], parts[1] - 1, parts[2]);
-	// }
 
-	// $scope.search.submit = function() {
-	// 	$utils.ajax('/minion/efforts/search.json', $scope.search.data,
-	// 			function(data) {
-	// 				$scope.results = data.data;
-	// 			});
-	// }
+	$scope.isFormReady=function(){
+		
+		return $scope.addeffortform.$invalid || (!$scope.isAllocationSelected());
+	}
 	$scope.dateRange = [];
-	// $scope.$watch('startdate', function(newVal, oldVal) {
-	// 	$scope.updateDates();
-	// });
 
-	// $scope.$watch('enddate', function(newVal, oldVal) {
-	// 	$scope.updateDates();
-	// });
 
 	Date.prototype.yyyymmdd = function() {
 		var yyyy = this.getFullYear().toString();
@@ -309,11 +302,11 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 
 	$scope.updateDates = function() {
 
-		if(angular.isUndefined($scope.selectedAllocation)){
+		if($scope.selectedAllocation.length<=0){
 			return;
 		}
 		var reqdata = {
-				"allocationId" : $scope.selectedAllocation.id,
+				"allocation" : $scope.selectedAllocation,
 				"empId" : $rootScope.empId,
 				"password" : $rootScope.password,
 				"startDate" : $scope.startDate,
@@ -321,7 +314,9 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 		};
 
 		$utils.ajax(URL+'/efforts/getEfforts', reqdata, function(data) {
-			$scope.effortData= data.object;
+			
+
+			
 
 			if ($scope.startDate != null && $scope.endDate != null
 					&& $scope.startDate <= $scope.endDate) {
@@ -332,36 +327,29 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 
 				while (start <= end) {
 
-					var effortDataItem = {date:start.yyyymmdd(),effort:"0"};
-					for (var int = 0; !angular.isUndefined($scope.effortData) && int < $scope.effortData.length; int++) {
-
-						if($scope.effortData[int].date == start.yyyymmdd()){
-							effortDataItem.effort=$scope.effortData[int].effort;
-						}
-					}
-					$scope.dateRange.push(effortDataItem);						
+					$scope.dateRange.push(start.yyyymmdd());						
 					
 					var newDate = start.setDate(start.getDate() + 1);
 					start = new Date(newDate);
 				}
-				$scope.$broadcast('dateRangeUpdated');
-
+						
 			}
-		});
-	}	
-			
-	$scope.addEfforts = function() {
-		var reqdata = {
-			"allocationId" : $scope.selectedAllocation.id,
-			"empId" : $rootScope.empId,
-			"password" : $rootScope.password,
-			"efforts" : $scope.dateRange
-		};
+			$scope.$broadcast('dateRangeUpdated',data.object);
 
-		$utils.ajax(URL+'/efforts/add', reqdata, function(data) {
-			$scope.results = data.data;
 		});
+
+		$scope._showForm = false;
 	}
+
+	$scope.showForm = function(){
+		$scope._showForm = true;
+	}
+
+	$scope.isFormVisible = function(){
+		return $scope._showForm == true;
+	}
+			
+
 });
 
 
@@ -369,14 +357,16 @@ minionModule.controller('EffortController', function($scope, $rootScope, $utils,
 
 minionModule.controller('AddEffortController', function($scope, $rootScope, $utils,$state) {
 
-	$scope.PAGE_LENGTH = 9;
+	$scope.PAGE_LENGTH = 7;
 
 	$scope.currentStartIndex = 0;
 	
-	$scope.currentEndIndex = 8;
+	$scope.currentEndIndex = 6;
 	$scope.currentDateRange = [];
 
-	$scope.$on('dateRangeUpdated',function(){
+	$scope.$on('dateRangeUpdated',function(event,data){
+
+		$scope.results = data;
 		$scope.currentStartIndex = 0;
 
 		if($scope.dateRange.length < $scope.PAGE_LENGTH){
@@ -387,9 +377,11 @@ minionModule.controller('AddEffortController', function($scope, $rootScope, $uti
 
 	$scope.refresh = function(){
 		$scope.currentDateRange.splice(0, $scope.currentDateRange.length);
+
 		for (var i = $scope.currentStartIndex; i <= $scope.currentEndIndex; i++) {
 
 			$scope.currentDateRange.push($scope.dateRange[i]);
+
 		};		
 	}
 
@@ -428,6 +420,13 @@ minionModule.controller('AddEffortController', function($scope, $rootScope, $uti
 	}
 	$scope.isDecrementDisabled = function(){
 		return $scope.currentStartIndex == 0;
+	}
+
+	$scope.addEfforts = function() {
+
+		$utils.ajax(URL+'/efforts/add', {'request':$scope.results}, function(data) {
+			
+		});
 	}
 });
 
