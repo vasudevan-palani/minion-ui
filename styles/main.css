@@ -217,7 +217,7 @@ div[minion-date-picker] > input[readOnly]  {
 
 .header-vasu .empty {
   border-style: none;
-  height: 70px;
+  height: 45px;
   padding-left: 0px;
   padding-right: 0px;
   width: 100%;
@@ -233,3 +233,7 @@ div[minion-date-picker] > input[readOnly]  {
     padding-top: 20px;
 }
 
+
+.logout{
+  font-size:14px;
+}
