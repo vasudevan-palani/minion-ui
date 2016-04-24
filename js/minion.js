@@ -24,6 +24,18 @@ var minionModule = angular.module('sbAdminApp');
 
 var URL= 'http://knowinminutes.com:8080';
 
+minionModule.run(function($rootScope, $templateCache) {
+    $rootScope.$on('$routeChangeStart', function(event, next, current) {
+        if (typeof(current) !== 'undefined'){
+            $templateCache.remove(current.templateUrl);
+        }
+    });
+
+    $rootScope.isEmpty = function(item){
+    	return item == undefined || item == "";
+    }
+});
+
 minionModule
 		.config([
 				'$httpProvider',

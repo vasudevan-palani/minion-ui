@@ -1,23 +1,25 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-3">
+        </div>
+        <div class="col-lg-6">
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">Minion : Please Sign In</h3>
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-lg-6">
-                            <img src="images/minion.png" height="200px" />
+                        <div class="col-lg-4">
+                            <img src="images/minion.png" height="150px" />
                         </div>
-                        <div class="col-lg-6">
-                            <form role="form">
+                        <div class="col-lg-8">
+                            <form role="form" name="loginform">
                                 <fieldset>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Employee Id" name="empId" type="empId" autofocus ng-model="data.empId">
+                                        <input class="form-control" placeholder="Employee Id" name="empId" type="empId" autofocus ng-model="data.empId" required>
                                     </div>
                                     <div class="form-group">
-                                        <input class="form-control" placeholder="Password" name="password" type="password" value="" ng-model="data.password">
+                                        <input class="form-control" placeholder="Password" name="password" type="password" value="" ng-model="data.password" required>
                                     </div>
                                     <!--div class="form-group checkbox checkbox-primary">
                                         <input id="rememberme" type="checkbox">
@@ -25,13 +27,15 @@
                                         </input>
                                     </div>
                                     <!-- Change this to a button or input when using this as a form -->
-                                    <button type="submit" class="btn btn-primary btn-block" ng-click="login()">Login</a>
+                                    <button type="submit" class="btn btn-primary btn-block" ng-click="login()" ng-disabled="loginform.$invalid">Login</a>
                                 </fieldset>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-3">
         </div>
     </div>
 </div>

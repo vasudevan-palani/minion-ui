@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="col-lg-4" >
                                         <div class="form-group">
-                                            <label>Project</label>
+                                            <label>* Project</label>
                                               <ui-select ng-model="data.project" theme="bootstrap">
                                                 <ui-select-match placeholder="Pick a project ...">{{$select.selected.name}}</ui-select-match>
                                                 <ui-select-choices repeat="projectItem in $root.selects.project | filter: $select.search">
@@ -122,7 +122,7 @@
                                 <div class="row">
                                     <div class="col-lg-12" >
                                         <div class="form-group">
-                                            <button class="btn btn-lg btn-block btn-success" ng-click="addPurchaseOrder()" ng-disabled="addpurchaseorderform.$invalid"><i class="fa fa-check"></i>  Submit</button>
+                                            <button class="btn btn-lg btn-block btn-success" ng-click="addPurchaseOrder()" ng-disabled="addpurchaseorderform.$invalid || isEmpty(data.project)"><i class="fa fa-check"></i>  Submit</button>
                                         </div>
                                     </div>
                                 </div>

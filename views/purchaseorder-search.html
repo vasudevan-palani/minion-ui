@@ -49,7 +49,7 @@
                                         <th>Project</th>
                                     </tr>
                                     <tr ng-repeat="po in results.pos">
-                                        <td><button class="btn btn-outline btn-link" ng-click="selectPO(po)">{{po.poNumber}}</button></td>
+                                        <td><span style="cursor: pointer; cursor: hand;" ng-click="selectPO(po)">{{po.poNumber}}</span></td>
                                         <td>{{po.version}}</td>
                                         <td>{{po.buyer}}</td>
                                         <td>{{po.requestedDate}}</td>
