@@ -1,5 +1,5 @@
-                        <div class="col-lg-2"/>
-                        <div class="col-lg-8" ng-controller="EditPurchaseOrderController">
+                        <div class="col-lg-1"/>
+                        <div class="col-lg-10" ng-controller="EditPurchaseOrderController">
                             <form name="editpurchaseorderform" novalidate>
                             <div class="row">
                                 <div class="col-lg-4" >
@@ -25,13 +25,21 @@
                                 <div class="col-lg-4" >
                                     <div class="form-group">
                                         <label>Project</label>
+                                        <div class="input-group">
                                           <ui-select ng-model="data.project" theme="bootstrap">
                                             <ui-select-match placeholder="Pick a project ...">{{$select.selected.name}}</ui-select-match>
                                             <ui-select-choices repeat="projectItem in $root.selects.project | filter: $select.search">
                                               <div ng-bind-html="projectItem.name | highlight: $select.search"></div>
                                             </ui-select-choices>
                                           </ui-select>
-                                        <p class="help-block">Project name as in ESA</p>                                        
+
+                                        <span class="input-group-btn">
+                                              <button type="button" ng-click="data.project = undefined;data.projectId=undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                              </button>
+                                        </span>
+                                        </div>
+                                        <p class="help-block">Project name as in ESA</p> 
                                     </div>
                                 </div>
                             </div>
@@ -77,12 +85,19 @@
                                     </div>
                                     <div class="form-group" ng-show="isUserVisible(item)" ng-show="isUserVisible(item)">
                                         <label>User</label>
+                                        <div class="input-group">
                                           <ui-select ng-model="item.user" theme="bootstrap">
                                             <ui-select-match placeholder="Pick a user ...">{{$select.selected.name}}</ui-select-match>
                                             <ui-select-choices repeat="userItem in $root.selects.user | filter: $select.search">
                                               <div ng-bind-html="userItem.name | highlight: $select.search"></div>
                                             </ui-select-choices>
                                           </ui-select>
+                                        <span class="input-group-btn">
+                                              <button type="button" ng-click="item.user = undefined;item.userId=undefined" class="btn btn-default">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                              </button>
+                                        </span>
+                                        </div>
                                         <p class="help-block">{{item.role}}</p>
                                     </div>
                                 </div>
@@ -140,4 +155,4 @@
                             </div>
                             </form>
                         </div>
-                        <div class="col-lg-2"/>
+                        <div class="col-lg-1"/>

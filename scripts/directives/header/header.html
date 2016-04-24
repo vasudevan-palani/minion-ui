@@ -1,32 +1,32 @@
-<div class="row" ng-controller="HeaderCtrl">
-    <div class="col-lg-2 relative">
-      <div class="logo-bg">
-        <img src="images/minion.png" height="100px" style="position:absolute;left:50px;top:10px;"/>
+  <div class="row" ng-controller="HeaderCtrl">
+      <div class="col-lg-2 relative">
+        <div class="logo-bg">
+          <img src="images/minion.png" height="100px" style="position:absolute;left:50px;top:10px;"/>
+        </div>
       </div>
-    </div>
-    <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg" ui-sref="dashboard.invoice" ng-class="{'btn-success':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
-        Invoices
-      </button>
-    </div>
-    <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg" ui-sref="dashboard.purchaseorder" ng-class="{'btn-success':isState('dashboard.purchaseorder'),'btn-primary':!isState('dashboard.purchaseorder')}">
-        PurchaseOrders
-      </button>
-    </div>
-    <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg" ng-class="{'btn-success':isState('dashboard.project'),'btn-primary':!isState('dashboard.project')}">
-        Projects
-      </button>
-    </div>
-    <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg" ui-sref="dashboard.effort" ng-class="{'btn-success':isState('dashboard.effort'),'btn-primary':!isState('dashboard.effort')}">
-        Efforts
-      </button>
-    </div>
-    <div class="col-lg-2 header-vasu">
-      <button class="btn btn-block btn-lg btn-primary" ng-click="logout()">
-        Logout ( {{$root.empId}} )
-      </button>
-    </div>
-</div>
+      <div class="col-lg-2 header-vasu">
+        <button class="btn btn-block btn-lg" ui-sref="dashboard.invoice" ng-class="{'btn-success':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
+          Invoices
+        </button>
+      </div>
+      <div class="col-lg-2 header-vasu">
+        <button class="btn btn-block btn-lg" ui-sref="dashboard.purchaseorder" ng-class="{'btn-success':isState('dashboard.purchaseorder'),'btn-primary':!isState('dashboard.purchaseorder')}">
+          PurchaseOrders
+        </button>
+      </div>
+      <div class="col-lg-2 header-vasu">
+        <button class="btn btn-block btn-lg" ng-class="{'btn-success':isState('dashboard.project'),'btn-primary':!isState('dashboard.project')}">
+          Projects
+        </button>
+      </div>
+      <div class="col-lg-2 header-vasu">
+        <button class="btn btn-block btn-lg" ui-sref="dashboard.effort" ng-class="{'btn-success':isState('dashboard.effort'),'btn-primary':!isState('dashboard.effort')}">
+          Efforts
+        </button>
+      </div>
+      <div class="col-lg-2 header-vasu">
+        <button class="btn btn-block btn-lg btn-primary" ng-click="logout()">
+          Logout ( {{$root.empId}} )
+        </button>
+      </div>
+  </div>

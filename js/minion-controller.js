@@ -143,6 +143,9 @@ minionModule.controller('SearchPurchaseOrderController', function($scope, $rootS
 		if(!angular.isUndefined($scope.data.project)){
 			$scope.data.projectId = $scope.data.project.id;
 		}
+		else{
+			$scope.data.projectId = undefined;
+		}
 		
 		$utils.ajax(URL+'/purchaseorders/search', $scope.data, function(data) {
 			$scope.results.pos = data.pos;
@@ -241,6 +244,10 @@ minionModule.controller('EditPurchaseOrderController', function($scope, $rootSco
 			if(!angular.isUndefined($scope.data.poRoles[roleIndex].user)){
 				$scope.data.poRoles[roleIndex].userId = $scope.data.poRoles[roleIndex].user.id;				
 			}
+		}
+		if(!angular.isUndefined($scope.data.project))
+		{
+			$scope.data.projectId = $scope.data.project.id;			
 		}
 		$utils.ajax(URL+'/purchaseorders/update', {'po':$scope.data}, function(data) {
 
@@ -381,8 +388,7 @@ minionModule.controller('AddEffortController', function($scope, $rootScope, $uti
 		for (var i = $scope.currentStartIndex; i <= $scope.currentEndIndex; i++) {
 
 			$scope.currentDateRange.push($scope.dateRange[i]);
-
-		};		
+		};
 	}
 
 	$scope.increment = function(){
@@ -561,8 +567,8 @@ minionModule.controller('AddInvoiceController', function($scope, $rootScope, $ut
 
 
 minionModule.controller('SearchInvoiceController', function($scope, $rootScope, $utils,$state) {
-	$rootScope.empId = "161547";
-	$rootScope.password = "password";	
+	// $rootScope.empId = "161547";
+	// $rootScope.password = "password";	
 
 	$scope.results={};
 
