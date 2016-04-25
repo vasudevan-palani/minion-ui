@@ -687,6 +687,14 @@ minionModule.controller('EditInvoiceController', function($scope, $rootScope, $u
 	}
 
 	$scope.updateInvoice = function(){
+
+		var users = $rootScope.selects.user;
+		var invoiceUsers = $scope.data.invoiceUsers;
+
+		for(invoiceUserItemIndex in invoiceUsers){
+			invoiceUsers[invoiceUserItemIndex].userId = invoiceUsers[invoiceUserItemIndex].user.id;
+		}
+			
 		$utils.ajax(URL+'/invoice/update', {'invoice':$scope.data}, function(data) {
 
 		});
