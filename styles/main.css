@@ -204,6 +204,26 @@ div[minion-date-picker] > input[readOnly]  {
   background-color: #337ab7;
   padding-left: 0px;
   padding-right: 0px;
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #337ab7;
+}
+
+.header-logout {
+  background-color: #337ab7;
+  padding-left: 0px;
+  padding-right: 0px;
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #337ab7;
+}
+
+.header-logout button {
+  border-style: none;
+  height: 45px;
+  padding-left: 0px;
+  padding-right: 0px;
+  width: 100%;
 }
 
 .header-vasu button {
@@ -212,6 +232,7 @@ div[minion-date-picker] > input[readOnly]  {
   padding-left: 0px;
   padding-right: 0px;
   width: 100%;
+  color:#CCC;
 }
 
 
@@ -236,4 +257,34 @@ div[minion-date-picker] > input[readOnly]  {
 
 .logout{
   font-size:14px;
+}
+
+.border-bottom{
+  border-bottom-style: solid;
+  border-width: 1px;
+  border-color: #CCC;
+}
+
+.header-vasu button.btn-header-selected{
+  border-bottom-style: solid;
+  border-width: 3px;
+  border-color: #FFF;
+  border-radius: 0px;
+  color: #FFF;
+}
+
+.header-vasu button:hover{
+  background-color: #337ab7;
+  border-bottom-style: solid;
+  border-width: 3px;
+  border-color: #FFF;
+  border-radius: 0px;
+}
+
+.header-vasu button:visited{
+  background-color: #337ab7;
+  border-bottom-style: solid;
+  border-width: 3px;
+  border-color: #FFF;
+  border-radius: 0px;
 }

@@ -5,17 +5,17 @@
         </div>
       </div>
       <div class="col-lg-2 header-vasu">
-        <button class="btn btn-block btn-lg" ui-sref="dashboard.invoice" ng-class="{'btn-success':isState('dashboard.invoice'),'btn-primary':!isState('dashboard.invoice')}">
+        <button class="btn btn-block btn-lg btn-primary" ui-sref="dashboard.invoice" ng-class="{'btn-header-selected':isState('dashboard.invoice')}">
           Invoices
         </button>
       </div>
       <div class="col-lg-2 header-vasu">
-        <button class="btn btn-block btn-lg" ui-sref="dashboard.purchaseorder" ng-class="{'btn-success':isState('dashboard.purchaseorder'),'btn-primary':!isState('dashboard.purchaseorder')}">
+        <button class="btn btn-block btn-lg btn-primary" ui-sref="dashboard.purchaseorder" ng-class="{'btn-header-selected':isState('dashboard.purchaseorder')}">
           PurchaseOrders
         </button>
       </div>
       <div class="col-lg-2 header-vasu">
-        <button class="btn btn-block btn-lg" ui-sref="dashboard.effort" ng-class="{'btn-success':isState('dashboard.effort'),'btn-primary':!isState('dashboard.effort')}">
+        <button class="btn btn-block btn-lg btn-primary" ui-sref="dashboard.effort" ng-class="{'btn-header-selected':isState('dashboard.effort')}">
           Efforts
         </button>
       </div>
@@ -23,7 +23,7 @@
         <div class="empty">
         </div>
       </div>
-      <div class="col-lg-2 header-vasu  ">
+      <div class="col-lg-2 header-logout">
         <button class="btn btn-block btn-lg btn-primary logout" ng-click="logout()">
           Logout ( {{$root.empId}} )
         </button>
